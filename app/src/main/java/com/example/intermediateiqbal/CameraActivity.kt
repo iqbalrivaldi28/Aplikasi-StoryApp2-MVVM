@@ -1,44 +1,54 @@
 package com.example.intermediateiqbal
 
-import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.view.WindowInsets
 import android.view.WindowManager
-import android.widget.Toast
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.ImageCapture
-import androidx.camera.core.ImageCaptureException
-import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
+import android.view.WindowInsets
 import com.example.intermediateiqbal.addStory.AddStoryActivity
 import com.example.intermediateiqbal.databinding.ActivityCameraBinding
+import android.os.Bundle
+import android.content.Intent
+import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.camera.core.ImageCaptureException
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.Preview
+import androidx.camera.core.ImageCapture
+import androidx.camera.lifecycle.ProcessCameraProvider
+
 
 class CameraActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityCameraBinding
-    private var imageCapture: ImageCapture? = null
-    private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+    private var selectKamera: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
+    private var photoGambar: ImageCapture? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityCameraBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.captureImage.setOnClickListener { takePhoto() }
-        binding.switchCamera.setOnClickListener {
-            cameraSelector = if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) CameraSelector.DEFAULT_FRONT_CAMERA
-            else CameraSelector.DEFAULT_BACK_CAMERA
-            startCamera()
+        binding.balikCamera.setOnClickListener {
+            selectKamera = if (selectKamera == CameraSelector.DEFAULT_BACK_CAMERA)
+            {
+                CameraSelector.DEFAULT_FRONT_CAMERA
+            }
+            else
+            {
+                CameraSelector.DEFAULT_BACK_CAMERA
+            }
+            camera()
+        }
+
+        binding.photo.setOnClickListener {
+            ambilPhoto()
         }
     }
 
     public override fun onResume() {
         super.onResume()
         hideSystemUI()
-        startCamera()
+        camera()
     }
 
     private fun hideSystemUI() {
@@ -54,41 +64,10 @@ class CameraActivity : AppCompatActivity() {
         supportActionBar?.hide()
     }
 
-    private fun startCamera() {
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
-
-        cameraProviderFuture.addListener({
-            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
-            val preview = Preview.Builder()
-                .build()
-                .also {
-                    it.setSurfaceProvider(binding.viewFinder.surfaceProvider)
-                }
-
-            imageCapture = ImageCapture.Builder().build()
-
-            try {
-                cameraProvider.unbindAll()
-                cameraProvider.bindToLifecycle(
-                    this,
-                    cameraSelector,
-                    preview,
-                    imageCapture
-                )
-            } catch (exc: Exception) {
-                Toast.makeText(
-                    this@CameraActivity,
-                    "Gagal menampilkan gambar",
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }, ContextCompat.getMainExecutor(this))
-
-    }
 
 
-    private fun takePhoto() {
-        val imageCapture = imageCapture ?: return
+    private fun ambilPhoto() {
+        val imageCapture = photoGambar ?: return
 
         val photoFile = Constants.createFile(application)
 
@@ -109,13 +88,44 @@ class CameraActivity : AppCompatActivity() {
                     intent.putExtra("picture", photoFile)
                     intent.putExtra(
                         "isBackCamera",
-                        cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA
+                        selectKamera == CameraSelector.DEFAULT_BACK_CAMERA
                     )
                     setResult(AddStoryActivity.CAMERA_X_RESULT, intent)
                     finish()
                 }
             }
         )
+    }
+
+    private fun camera() {
+        val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
+        cameraProviderFuture.addListener({
+            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+            val preview = Preview.Builder()
+                .build()
+                .also {
+                    it.setSurfaceProvider(binding.placeView.surfaceProvider)
+                }
+
+            photoGambar = ImageCapture.Builder().build()
+
+            try {
+                cameraProvider.unbindAll()
+                cameraProvider.bindToLifecycle(
+                    this,
+                    selectKamera,
+                    preview,
+                    photoGambar
+                )
+            } catch (exc: Exception) {
+                Toast.makeText(
+                    this@CameraActivity,
+                    "Gagal menampilkan gambar",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }, ContextCompat.getMainExecutor(this))
+
     }
 
 

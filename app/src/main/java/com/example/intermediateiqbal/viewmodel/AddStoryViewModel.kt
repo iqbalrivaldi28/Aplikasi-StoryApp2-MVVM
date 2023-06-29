@@ -13,11 +13,15 @@ import retrofit2.Response
 
 class AddStoryViewModel : ViewModel() {
 
-    private val _isUpload = MutableLiveData<Boolean>()
-    val isUpload : LiveData<Boolean> = _isUpload
+    private val _isStoryUpload = MutableLiveData<Boolean>()
+    val storyUpload : LiveData<Boolean> = _isStoryUpload
 
-    fun uploadStory(file : MultipartBody.Part, description: RequestBody, token: String) {
-        _isUpload.value = false
+    fun storyUserUpload(
+        file : MultipartBody.Part,
+        description: RequestBody,
+        token: String) {
+
+        _isStoryUpload.value = false
         val client = APIConfig.getAPIService().uploadStory(file, description, "Bearer $token")
         client.enqueue(object : Callback<AddStoryResponse> {
             override fun onResponse(
@@ -26,11 +30,10 @@ class AddStoryViewModel : ViewModel() {
             ) {
                 val responseBody = response.body()
                 if (response.isSuccessful && responseBody != null) {
-                    _isUpload.value = true
+                    _isStoryUpload.value = true
                 }
             }
             override fun onFailure(call: Call<AddStoryResponse>, t: Throwable) {
-
             }
         })
     }

@@ -32,21 +32,6 @@ class LoginActivity : AppCompatActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        loginViewModel = ViewModelProvider(this,
-            ViewModelFactory(UserPreferences.getInstance(dataStore))
-        )[LoginViewModel::class.java]
-
-        loginViewModel.getUser().observe(this){
-            if (it.isLogin){
-                val intent = Intent(this, MainActivity::class.java)
-                intent.putExtra(Constants.PARAM_TOKEN, it.token)
-                startActivity(intent)
-                finish()
-            }
-        }
-
-        playAnimation()
-
         binding.intRegister.setOnClickListener {
             val intent = Intent(this, RegisterActivity::class.java)
             startActivity(intent)
@@ -56,7 +41,20 @@ class LoginActivity : AppCompatActivity() {
             loginAccount()
         }
 
+        loginViewModel = ViewModelProvider(this,
+            ViewModelFactory(UserPreferences.getInstance(dataStore))
+        )[LoginViewModel::class.java]
 
+        loginViewModel.getUser().observe(this){
+            if (it.isUserLogin){
+                val intent = Intent(this, MainActivity::class.java)
+                intent.putExtra(Constants.PARAM_TOKEN, it.token)
+                startActivity(intent)
+                finish()
+            }
+        }
+
+        playAnimation()
     }
 
     private fun playAnimation() {
@@ -84,9 +82,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun loginAccount() {
         loginViewModel.login(binding.emailEditText.text.toString(), binding.passwordEditText.text.toString())
-        loginViewModel.isLogin.observe(this){
+        loginViewModel.isUserLogin.observe(this){
             if (it){
-                Toast.makeText(this, "Berhasil Login", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Yeay Berhasil Login :)", Toast.LENGTH_SHORT).show()
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()

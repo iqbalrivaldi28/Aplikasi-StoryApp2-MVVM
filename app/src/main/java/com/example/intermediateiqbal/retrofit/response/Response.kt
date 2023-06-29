@@ -3,14 +3,14 @@ package com.example.intermediateiqbal.retrofit.response
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
-data class LoginResponse(
+data class RegisterResponse(
     val error: Boolean,
-    val loginResult: LoginResult,
     val message: String
 )
 
-data class RegisterResponse(
+data class LoginResponse(
     val error: Boolean,
+    val loginResult: LoginResult,
     val message: String
 )
 
@@ -26,6 +26,11 @@ data class StoryResponse(
     val message: String
 )
 
+data class AddStoryResponse(
+    val error: Boolean,
+    val message: String,
+)
+
 @Parcelize
 data class StoryItem(
     val id: String,
@@ -37,7 +42,3 @@ data class StoryItem(
     val lon: Double
 ) : Parcelable
 
-data class AddStoryResponse(
-    val error: Boolean,
-    val message: String,
-)

@@ -13,14 +13,29 @@ import retrofit2.Response
 
 class MainViewModel(private val userPreferences: UserPreferences) : ViewModel() {
 
-    private val _listStory = MutableLiveData<List<StoryItem>>()
-    val listStory : LiveData<List<StoryItem>> = _listStory
+    private val _listUserStory = MutableLiveData<List<StoryItem>>()
+    val listUserStory : LiveData<List<StoryItem>> = _listUserStory
 
+    fun userStory(token: String)  {
+        val client = APIConfig.getAPIService().getStories("Bearer $token")
+        client.enqueue(object : Callback<StoryResponse> {
 
-    fun getUser(): LiveData<User> {
-        return userPreferences.getUser().asLiveData()
+            override fun onResponse(call: Call<StoryResponse>, response: Response<StoryResponse>) {
+                val responseBody = response.body()
+                if (response.isSuccessful && responseBody != null)
+                {
+                    _listUserStory.value = responseBody.listStory
+                }
+                else
+                {
+                    _listUserStory.value = emptyList()
+                }
+            }
+
+            override fun onFailure(call: Call<StoryResponse>, t: Throwable) {}
+
+        })
     }
-
 
     fun logout() {
         viewModelScope.launch {
@@ -28,24 +43,8 @@ class MainViewModel(private val userPreferences: UserPreferences) : ViewModel() 
         }
     }
 
-    fun getStory(token: String)  {
-        val client = APIConfig.getAPIService().getStories("Bearer $token")
-        client.enqueue(object : Callback<StoryResponse> {
-            override fun onResponse(
-                call: Call<StoryResponse>,
-                response: Response<StoryResponse>
-            ) {
-                val responseBody = response.body()
-                if (response.isSuccessful && responseBody != null) {
-                    _listStory.value = responseBody.listStory
-                }else{
-                    _listStory.value = emptyList()
-                }
-            }
-            override fun onFailure(call: Call<StoryResponse>, t: Throwable) {
-
-            }
-        })
+    fun getUser(): LiveData<User> {
+        return userPreferences.getUser().asLiveData()
     }
 
 }

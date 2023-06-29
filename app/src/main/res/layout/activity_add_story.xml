@@ -22,6 +22,7 @@
 
     <Button
         android:id="@+id/btn_add_camera"
+        android:background="@drawable/shapebutton"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
@@ -35,6 +36,7 @@
 
     <Button
         android:id="@+id/btn_add_galery"
+        android:background="@drawable/shapebutton"
         android:layout_width="130dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
@@ -72,6 +74,7 @@
 
     <Button
         android:id="@+id/button_add"
+        android:background="@drawable/shapebutton"
         android:layout_width="360dp"
         android:layout_height="52dp"
         android:layout_marginTop="16dp"

@@ -1,28 +1,24 @@
 package com.example.intermediateiqbal
 
 import android.app.Application
-import android.content.ContentResolver
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.graphics.Matrix
+import android.content.ContentResolver
+import android.content.Context
 import android.net.Uri
 import android.os.Environment
 import java.io.*
 import java.text.SimpleDateFormat
+import android.graphics.Matrix
 import java.util.*
 
 object Constants {
 
     const val PARAM_TOKEN = "param_token"
-
     private const val MAXIMAL_SIZE = 1000000
     private const val FILENAME_FORMAT = "dd-MMM-yyyy"
 
-    private val timeStamp: String = SimpleDateFormat(
-        FILENAME_FORMAT,
-        Locale.US
-    ).format(System.currentTimeMillis())
+    private val timeStamp: String = SimpleDateFormat(FILENAME_FORMAT, Locale.US).format(System.currentTimeMillis())
 
     private fun createTempFile(context: Context): File {
         val storageDir: File? = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)

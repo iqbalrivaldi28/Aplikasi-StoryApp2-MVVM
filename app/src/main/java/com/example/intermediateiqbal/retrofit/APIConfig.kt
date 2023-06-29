@@ -14,9 +14,11 @@ class APIConfig {
             } else {
                 HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.NONE)
             }
+
             val client = OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
                 .build()
+
             val retrofit = Retrofit.Builder()
                 .baseUrl("https://story-api.dicoding.dev/v1/")
                 .addConverterFactory(GsonConverterFactory.create())

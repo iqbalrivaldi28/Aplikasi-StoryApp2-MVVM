@@ -2,12 +2,15 @@ package com.example.intermediateiqbal.detailStory
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.bumptech.glide.Glide
-import com.example.intermediateiqbal.R
 import com.example.intermediateiqbal.databinding.ActivityDetailStoryBinding
 import com.example.intermediateiqbal.retrofit.response.StoryItem
+import com.bumptech.glide.Glide
 
 class DetailStoryActivity : AppCompatActivity() {
+
+    companion object {
+        const val EXTRA_DATA = "extra_data"
+    }
 
     private lateinit var binding : ActivityDetailStoryBinding
 
@@ -16,18 +19,13 @@ class DetailStoryActivity : AppCompatActivity() {
         binding = ActivityDetailStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val story = intent.getParcelableExtra<StoryItem>(EXTRA_DATA)
-
-        if (story != null){
-            binding.tvDetailName.text = story.name
-            binding.tvDetailDescription.text = story.description
+        val userStory = intent.getParcelableExtra<StoryItem>(EXTRA_DATA)
+        if (userStory != null){
+            binding.tvDetailName.text = userStory.name
+            binding.tvDetailDescription.text = userStory.description
             Glide.with(this)
-                .load(story.photoUrl)
+                .load(userStory.photoUrl)
                 .into(binding.ivDetailPhoto)
         }
-    }
-
-    companion object {
-        const val EXTRA_DATA = "extra_data"
     }
 }

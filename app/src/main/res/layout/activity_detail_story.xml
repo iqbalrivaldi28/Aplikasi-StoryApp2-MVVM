@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:srcCompat="@drawable/ic_baseline_person_24" />
+        app:srcCompat="@drawable/ic_baseline_person_black" />
 
     <TextView
         android:id="@+id/tv_detail_name"
@@ -27,6 +27,7 @@
         android:fontFamily="sans-serif"
         android:text="@string/name"
         android:textColor="@color/black"
+        android:textStyle="bold"
         android:textSize="20sp"
         android:gravity="center_vertical|start"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,7 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="32dp"
         android:layout_marginTop="12dp"
         android:layout_marginEnd="16dp"
         android:orientation="vertical"
@@ -80,10 +81,11 @@
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:fontFamily="sans-serif"
+            android:layout_marginStart="20dp"
             android:lineHeight="25dp"
             android:text="deskripsi"
             android:textColor="@color/black"
-            android:textSize="14sp"
+            android:textSize="17sp"
             android:transitionName="story_description"
             tools:targetApi="p" />
     </androidx.appcompat.widget.LinearLayoutCompat>

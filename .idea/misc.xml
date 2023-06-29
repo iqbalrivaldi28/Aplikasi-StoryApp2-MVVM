@@ -3,12 +3,23 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/acer/AndroidStudioProjects/IntermediateIqbal/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1255" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/IntermediateIqbal/app/src/main/res/drawable/ic_baseline_add_box_24.xml" value="0.1255" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/IntermediateIqbal/app/src/main/res/drawable/ic_baseline_camera_24.xml" value="0.1165" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/IntermediateIqbal/app/src/main/res/drawable/ic_baseline_cameraswitch_24.xml" value="0.1165" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/IntermediateIqbal/app/src/main/res/drawable/ic_baseline_lock_24.xml" value="0.1255" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/IntermediateIqbal/app/src/main/res/drawable/ic_baseline_person_24.xml" value="0.1255" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/IntermediateIqbal/app/src/main/res/drawable/image_login.xml" value="0.1255" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/IntermediateIqbal/app/src/main/res/drawable/shapebutton.xml" value="0.1255" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/IntermediateIqbal/app/src/main/res/layout/activity_about.xml" value="0.2" />
         <entry key="..\:/Users/acer/AndroidStudioProjects/IntermediateIqbal/app/src/main/res/layout/activity_add_story.xml" value="0.17074275362318841" />
         <entry key="..\:/Users/acer/AndroidStudioProjects/IntermediateIqbal/app/src/main/res/layout/activity_camera.xml" value="0.184375" />
         <entry key="..\:/Users/acer/AndroidStudioProjects/IntermediateIqbal/app/src/main/res/layout/activity_detail_story.xml" value="0.17074275362318841" />
         <entry key="..\:/Users/acer/AndroidStudioProjects/IntermediateIqbal/app/src/main/res/layout/activity_login.xml" value="0.17074275362318841" />
-        <entry key="..\:/Users/acer/AndroidStudioProjects/IntermediateIqbal/app/src/main/res/layout/activity_main.xml" value="0.17074275362318841" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/IntermediateIqbal/app/src/main/res/layout/activity_main.xml" value="0.21" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/IntermediateIqbal/app/src/main/res/layout/activity_maps.xml" value="0.2" />
         <entry key="..\:/Users/acer/AndroidStudioProjects/IntermediateIqbal/app/src/main/res/layout/activity_register.xml" value="0.17074275362318841" />
+        <entry key="..\:/Users/acer/AndroidStudioProjects/IntermediateIqbal/app/src/main/res/layout/activity_splash_screen.xml" value="0.1875" />
         <entry key="..\:/Users/acer/AndroidStudioProjects/IntermediateIqbal/app/src/main/res/layout/item_layout.xml" value="0.184375" />
         <entry key="..\:/Users/acer/AndroidStudioProjects/IntermediateIqbal/app/src/main/res/menu/opttion_menu.xml" value="0.184375" />
       </map>

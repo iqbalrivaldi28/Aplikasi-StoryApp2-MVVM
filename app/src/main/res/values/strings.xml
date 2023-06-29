@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">IntermediateIqbal</string>
     <string name="title_activity_register">RegisterActivity</string>
-    <string name="cp">\@iqbal2023</string>
+    <string name="cp">Iqbal Rivaldi</string>
     <string name="signup">Daftar</string>
     <string name="login">Masuk</string>
     <string name="message_welcome_page">Mau belajar Android, iOS, Machine Learning, Cloud, Front-End, Back-End, dan bidang IT lainnya? Di Dicodingin aja!</string>

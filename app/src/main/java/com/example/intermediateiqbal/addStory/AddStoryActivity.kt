@@ -34,20 +34,39 @@ import java.io.File
 
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+
 class AddStoryActivity : AppCompatActivity() {
 
+    companion object {
+        const val CAMERA_X_RESULT = 200
+        private val REQUIRED_PERMISSIONS = arrayOf(android.Manifest.permission.CAMERA)
+        private const val REQUEST_CODE_PERMISSIONS = 10
+        const val EXTRA_ADD_TOKEN = "addToken"
+    }
+
     private lateinit var binding : ActivityAddStoryBinding
-    private lateinit var multipartBody: MultipartBody.Part
     private lateinit var description : RequestBody
     private var status : Boolean = false
-    private lateinit var addStoryViewModel: AddStoryViewModel
+    private lateinit var multipartBody: MultipartBody.Part
     private lateinit var token : String
-
+    private lateinit var addStoryViewModel: AddStoryViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityAddStoryBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.btnAddGalery.setOnClickListener {
+            galery()
+        }
+
+        binding.buttonAdd.setOnClickListener {
+            uploadStory()
+        }
+
+        binding.btnAddCamera.setOnClickListener {
+            cameraX()
+        }
 
         if (!allPermissionsGranted()) {
             ActivityCompat.requestPermissions(
@@ -63,18 +82,7 @@ class AddStoryActivity : AppCompatActivity() {
 
         token = intent.getStringExtra(EXTRA_ADD_TOKEN)!!
 
-        binding.btnAddCamera.setOnClickListener {
-            starCameraX()
-        }
-
-        binding.btnAddGalery.setOnClickListener {
-            startGallery()
-        }
-        binding.buttonAdd.setOnClickListener {
-            uploadStories()
-        }
-
-        addStoryViewModel.isUpload.observe(this){
+        addStoryViewModel.storyUpload.observe(this){
             if (it){
                 Toast.makeText(this, "Berhasil Upload", Toast.LENGTH_SHORT).show()
                 finish()
@@ -83,17 +91,7 @@ class AddStoryActivity : AppCompatActivity() {
 
     }
 
-    private fun uploadStories(){
-        val desc = binding.edAddDescription.text.toString()
-        description = desc.toRequestBody("text/plain".toMediaType())
-
-        if (status){
-            addStoryViewModel.uploadStory(multipartBody, description, token)
-        }
-    }
-
-
-    private fun startGallery() {
+    private fun galery() {
         val intent = Intent()
         intent.action = Intent.ACTION_GET_CONTENT
         intent.type = "image/*"
@@ -118,8 +116,7 @@ class AddStoryActivity : AppCompatActivity() {
     }
 
 
-
-    private fun starCameraX() {
+    private fun cameraX() {
         val intent = Intent(this, CameraActivity::class.java)
         launcherIntentCameraX.launch(intent)
     }
@@ -147,6 +144,15 @@ class AddStoryActivity : AppCompatActivity() {
         }
     }
 
+    private fun uploadStory(){
+        val desc = binding.edAddDescription.text.toString()
+        description = desc.toRequestBody("text/plain".toMediaType())
+
+        if (status){
+            addStoryViewModel.storyUserUpload(multipartBody, description, token)
+        }
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<String>,
@@ -157,7 +163,7 @@ class AddStoryActivity : AppCompatActivity() {
             if (!allPermissionsGranted()) {
                 Toast.makeText(
                     this,
-                    "Tidak mendapat Permission",
+                    "Akses Di Tolak",
                     Toast.LENGTH_SHORT
                 ).show()
                 finish()
@@ -168,12 +174,5 @@ class AddStoryActivity : AppCompatActivity() {
         ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
     }
 
-
-    companion object {
-        const val CAMERA_X_RESULT = 200
-        private val REQUIRED_PERMISSIONS = arrayOf(android.Manifest.permission.CAMERA)
-        private const val REQUEST_CODE_PERMISSIONS = 10
-        const val EXTRA_ADD_TOKEN = "addToken"
-    }
 
 }

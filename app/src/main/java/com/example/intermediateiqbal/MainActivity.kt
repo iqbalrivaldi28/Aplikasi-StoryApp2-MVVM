@@ -1,34 +1,33 @@
 package com.example.intermediateiqbal
 
 import android.content.Context
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.Settings
+import android.content.Intent
 import android.view.Menu
 import android.view.MenuItem
-import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.preferencesDataStore
+import androidx.datastore.core.DataStore
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.intermediateiqbal.adapter.UserAdapter
-import com.example.intermediateiqbal.addStory.AddStoryActivity
-import com.example.intermediateiqbal.addStory.AddStoryActivity.Companion.EXTRA_ADD_TOKEN
-import com.example.intermediateiqbal.databinding.ActivityMainBinding
-import com.example.intermediateiqbal.detailStory.DetailStoryActivity
-import com.example.intermediateiqbal.detailStory.DetailStoryActivity.Companion.EXTRA_DATA
 import com.example.intermediateiqbal.login.LoginActivity
 import com.example.intermediateiqbal.retrofit.response.StoryItem
 import com.example.intermediateiqbal.viewmodel.MainViewModel
+import com.example.intermediateiqbal.addStory.AddStoryActivity.Companion.EXTRA_ADD_TOKEN
+import com.example.intermediateiqbal.detailStory.DetailStoryActivity.Companion.EXTRA_DATA
+import com.example.intermediateiqbal.about.AboutActivity
+import com.example.intermediateiqbal.adapter.UserAdapter
+import com.example.intermediateiqbal.addStory.AddStoryActivity
+import com.example.intermediateiqbal.databinding.ActivityMainBinding
+import com.example.intermediateiqbal.detailStory.DetailStoryActivity
 import com.example.intermediateiqbal.viewmodel.ViewModelFactory
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
 class MainActivity : AppCompatActivity() {
-
     private lateinit var binding : ActivityMainBinding
-    private lateinit var mainViewModel: MainViewModel
     private lateinit var adapter : UserAdapter
+    private lateinit var mainViewModel: MainViewModel
     private lateinit var token : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,23 +39,22 @@ class MainActivity : AppCompatActivity() {
             ViewModelFactory(UserPreferences.getInstance(dataStore))
         )[MainViewModel::class.java]
 
-
         mainViewModel.getUser().observe(this){
-            if (it.isLogin){
+            if (it.isUserLogin){
                 token = it.token
-                mainViewModel.getStory(token)
+                mainViewModel.userStory(token)
             }
         }
-
-        binding.rvListStory.layoutManager = LinearLayoutManager(this)
-        adapter = UserAdapter()
-        binding.rvListStory.adapter = adapter
 
         binding.btnAddStory.setOnClickListener {
             val intent = Intent(this@MainActivity, AddStoryActivity::class.java)
             intent.putExtra(EXTRA_ADD_TOKEN, token)
             startActivity(intent)
         }
+
+        binding.rvListStory.layoutManager = LinearLayoutManager(this)
+        adapter = UserAdapter()
+        binding.rvListStory.adapter = adapter
 
         adapter.setOnItemClickCallback(object: UserAdapter.OnItemClickCallback{
             override fun onItemClicked(story: StoryItem) {
@@ -66,21 +64,16 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-        mainViewModel.listStory.observe(this){
+        mainViewModel.listUserStory.observe(this){
             adapter.setListStory(it)
         }
+
     }
+
 
     override fun onResume() {
         super.onResume()
-
-        mainViewModel.getStory(token)
-    }
-
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.opttion_menu, menu)
-        return super.onCreateOptionsMenu(menu)
+        mainViewModel.userStory(token)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -92,10 +85,16 @@ class MainActivity : AppCompatActivity() {
                 finish()
             }
             R.id.tentang -> {
-
+                val intent = Intent(this@MainActivity, AboutActivity::class.java)
+                startActivity(intent)
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.opttion_menu, menu)
+        return super.onCreateOptionsMenu(menu)
     }
 }
 

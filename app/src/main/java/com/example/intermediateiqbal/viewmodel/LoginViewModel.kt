@@ -12,17 +12,16 @@ import retrofit2.Response
 
 class LoginViewModel(private val pref: UserPreferences) : ViewModel() {
 
-    private val _isLogin = MutableLiveData<Boolean>()
-    val isLogin : LiveData<Boolean> = _isLogin
+    private val _isUserLogin = MutableLiveData<Boolean>()
+    val isUserLogin : LiveData<Boolean> = _isUserLogin
 
     fun getUser(): LiveData<User> {
         return pref.getUser().asLiveData()
     }
 
     fun login(email: String, pass: String) {
-        _isLogin.value = false
-        val client = APIConfig.getAPIService().loginUser(email,
-            pass)
+        _isUserLogin.value = false
+        val client = APIConfig.getAPIService().loginUser(email, pass)
         client.enqueue(object : Callback<LoginResponse> {
             override fun onResponse(
                 call: Call<LoginResponse>,
@@ -35,8 +34,8 @@ class LoginViewModel(private val pref: UserPreferences) : ViewModel() {
                         responseBody.loginResult.token,
                         true,
                     )
-                    saveUser(user)
-                    _isLogin.value = true
+                    saveLogin(user)
+                    _isUserLogin.value = true
                 }
             }
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) {
@@ -45,7 +44,7 @@ class LoginViewModel(private val pref: UserPreferences) : ViewModel() {
         })
     }
 
-    fun saveUser(user: User) {
+    fun saveLogin(user: User) {
         viewModelScope.launch {
             pref.saveUser(user)
         }
